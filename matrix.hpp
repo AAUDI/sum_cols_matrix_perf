@@ -15,17 +15,18 @@ class matrix
 
     public:
     
-        matrix (int m_, int n_) : m(m_), n(n_){
 
-            mtx = (float**)malloc(n*sizeof(float*));
+        matrix(int m_, int n_ int type_layout) : m(m_), n(n_){
+
+            mtx = (float*)malloc(n*m*sizeof(float));
 
             for(int j=0; j<n; j++){
-                mtx[j] = (float*)malloc(m*sizeof(float));
-                for(int i=0; i<m; i++)
-                    mtx[j][i] = (rand() / (double) RAND_MAX) * (MAX_RAND - MIN_RAND) + MIN_RAND;
+                for(int i=0; i<m; i++){
+                    mtx[j*m + i] = ((rand() / (double) RAND_MAX) * (MAX_RAND - MIN_RAND) + MIN_RAND);
+                }
             }
-
         }
+
         
         void print_matrix();
         void print_sumcols_matrix();
@@ -33,15 +34,13 @@ class matrix
         float* sum_cols_matrix_v2();
 
         ~matrix(){
-            for(int j=0; j<n; j++)
-                free(mtx[j]);
             free(mtx);
             free(sum_cols_mtx);
         }
 
     protected:
-        double n, m;
-        float** mtx;
+        int n, m;
+        float* mtx;
         float* sum_cols_mtx;
 };
 
