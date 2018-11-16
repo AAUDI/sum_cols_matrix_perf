@@ -4,6 +4,8 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include <time.h>
+#include <omp.h>
+#include <cstring>
 
 using namespace std;
 
@@ -16,9 +18,16 @@ class matrix
     public:
     
 
-        matrix(int m_, int n_ int type_layout) : m(m_), n(n_){
+        matrix(int m_, int n_, int nb_threads_) : m(m_), n(n_), nb_threads(nb_threads_){
 
-            mtx = (float*)malloc(n*m*sizeof(float));
+            if((sum_cols_mtx = (float*)malloc(m*sizeof(float))) == NULL){
+			    printf("error while allocating memory for sum_cols_mtx\n");
+			    exit(1);
+		    }
+            if((mtx = (float*)malloc(m*n*sizeof(float))) == NULL){
+			    printf("error while allocating memory for mtx\n");
+			    exit(1);
+		    }
 
             for(int j=0; j<n; j++){
                 for(int i=0; i<m; i++){
@@ -29,9 +38,12 @@ class matrix
 
         
         void print_matrix();
-        void print_sumcols_matrix();
-        float* sum_cols_matrix_v1();
-        float* sum_cols_matrix_v2();
+        void print_sumcols_matrix(float* sum_cols_mtx);
+        void sum_cols_matrix_v1();
+        void sum_cols_matrix_v2();
+        void sum_cols_matrix_openmp_v2();
+        void memset_sum_cols_mtx();
+
 
         ~matrix(){
             free(mtx);
@@ -42,6 +54,7 @@ class matrix
         int n, m;
         float* mtx;
         float* sum_cols_mtx;
+        int nb_threads;
 };
 
 
