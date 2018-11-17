@@ -40,6 +40,7 @@ class matrix
         void print_matrix();
         void print_sumcols_matrix(float* sum_cols_mtx);
         void sum_cols_matrix_v1();
+        void sum_cols_matrix_openmp_v1();
         void sum_cols_matrix_v2();
         void sum_cols_matrix_openmp_v2();
         void memset_sum_cols_mtx();

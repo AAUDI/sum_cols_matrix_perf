@@ -1,14 +1,14 @@
 sum_cols_matrix.bin : main.o  matrix.o OpenMPTimer.o
-	g++ -o main.bin main.o matrix.o OpenMPTimer.o -lm -fopenmp
+	g++-5 -o main.bin main.o matrix.o OpenMPTimer.o -lm -fopenmp
 
 main.o : main.cpp matrix.hpp
-	g++ -c main.cpp
+	g++-5 -c main.cpp -fopenmp
 
 matrix.o : matrix.cpp matrix.hpp
-	g++ -c matrix.cpp
+	g++-5 -c matrix.cpp -fopenmp
 
 OpenMPTimer.o : OpenMPTimer.cpp OpenMPTimer.h
-	g++ -c OpenMPTimer.cpp
+	g++-5 -c OpenMPTimer.cpp -fopenmp
 
 clean : 
 	rm *.o *.bin
