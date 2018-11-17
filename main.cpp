@@ -86,6 +86,8 @@ int main(int argc, char **argv) {
 
     matrix_template<int> m(nb_cols_matrix, nb_rows_matrix, nb_threads, 0, 100);
     m.print_matrix();
+    +m;
+    m.print_op_cols_mtx();
 
     return 1;
 }

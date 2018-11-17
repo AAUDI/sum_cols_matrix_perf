@@ -43,7 +43,32 @@ public:
     }
 
 
-    T* operator+(){
+    void print_op_cols_mtx(){
+        for(int i=0; i<m; i++){
+            cout <<  op_cols_mtx[i] << " ";
+        }
+        cout << "\n";
+    }
+
+    void operator+(){
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                op_cols_mtx[i] += mtx[j*m + i];
+            }   
+        }
+    }
+
+    void operator-(){
+
+
+    }
+
+    void operator*(){
+
+
+    }
+
+    void operator/(int n){
 
 
     }
