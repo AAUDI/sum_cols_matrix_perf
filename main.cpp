@@ -84,10 +84,28 @@ int main(int argc, char **argv) {
     // printf("--------------------------------------------------------------------------------\n");
     // m.memset_sum_cols_mtx();
 
-    matrix_template<int> m(nb_cols_matrix, nb_rows_matrix, nb_threads, 0, 100);
+    #ifdef NO_OPENMP_GPU
+    matrix_template<float> m(nb_cols_matrix, nb_rows_matrix, 0.0, 100.0);
+    #endif
+
+    #ifdef OPENMP
+    matrix_template<float> m(nb_cols_matrix, nb_rows_matrix, nb_threads, 0.0, 100.0);
+    #endif
+
     m.print_matrix();
+     
     +m;
-    m.print_op_cols_mtx();
+    //m.print_op_cols_mtx();
+    m.memset_op_cols_mtx();
+    -m;
+    //m.print_op_cols_mtx();
+    m.memset_op_cols_mtx();
+    *m;
+    //m.print_op_cols_mtx();
+    m.memset_op_cols_mtx();
+    m/1;
+    //m.print_op_cols_mtx();
+    m.memset_op_cols_mtx();
 
     return 1;
 }
