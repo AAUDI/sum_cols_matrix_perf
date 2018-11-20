@@ -6,18 +6,31 @@
 #include <time.h>
 #include <omp.h>
 #include <cstring>
+#include <pthread.h>
+#include "stdint.h"
 
 using namespace std;
 
 #define MAX_RAND 100.0
 #define MIN_RAND 0.0
 
+
+
+typedef struct thread_data{
+
+    int id_thread;
+    int nb_rows;
+    int nb_columns; 
+    int nb_threads;
+    float* data_matrix;
+    float* sum_cols;
+}tdata_t;
+
+
 class matrix
 {
-
     public:
     
-
         matrix(int m_, int n_, int nb_threads_) : m(m_), n(n_), nb_threads(nb_threads_){
 
             if((sum_cols_mtx = (float*)malloc(m*sizeof(float))) == NULL){
@@ -43,6 +56,7 @@ class matrix
         void sum_cols_matrix_openmp_v1();
         void sum_cols_matrix_v2();
         void sum_cols_matrix_openmp_v2();
+        void sum_cols_matrix_pthreads();
         void memset_sum_cols_mtx();
 
 
