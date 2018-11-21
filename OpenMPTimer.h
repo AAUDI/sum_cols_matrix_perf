@@ -1,4 +1,5 @@
 
+#if defined (OPENMP) || defined(PTHREADS) || defined(NO_OPENMP_GPU)
 #ifndef OPENMP_TIMER_H_
 #define OPENMP_TIMER_H_
 
@@ -25,5 +26,6 @@ protected:
 
 };
 
+#endif
 
 #endif 

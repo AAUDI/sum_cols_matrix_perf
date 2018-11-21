@@ -1,6 +1,7 @@
 
-#include "OpenMPTimer.h"
+#if defined (OPENMP) || defined(PTHREADS) || defined(NO_OPENMP_GPU)
 
+#include "OpenMPTimer.h"
 
 OpenMPTimer::OpenMPTimer() {
   start_time = 0.0;
@@ -35,3 +36,5 @@ void OpenMPTimer::reset()
   total_time = 0.0;
 }
 
+
+#endif

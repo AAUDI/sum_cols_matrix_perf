@@ -10,10 +10,9 @@
 #include <pthread.h>
 
 using namespace std;
-
-
+#ifdef PTHREADS
 template <typename T>
-struct thread_data{
+struct thread_data_t{
     int id_thread;
     int nb_rows;
     int nb_columns; 
@@ -21,7 +20,39 @@ struct thread_data{
     T* data_matrix;
     T* sum_cols;
 };
+#endif
+#ifdef PTHREADS
+template <typename T>
+void* op_columns(void* thread_arg) { 
 
+    struct thread_data_t<T> *thread_d = (struct thread_data_t<T>  *) thread_arg;
+
+    int size_work = 0, row_start = 0, row_end = 0;
+    
+    size_work = thread_d->nb_rows/thread_d->nb_threads;
+    
+    if(((thread_d->nb_rows % thread_d->nb_threads) != 0) && (thread_d->id_thread == 0))
+        size_work += 1;
+        
+    row_start = thread_d->id_thread*size_work; 
+    row_end = (thread_d->id_thread+1)*size_work;   
+
+    if(((thread_d->nb_rows % thread_d->nb_threads) != 0) && (thread_d->id_thread != 0)){
+        row_start += 1;
+        row_end += 1;
+    }
+
+    printf("ID_THREAD %d, T_ID %d size_work %d row_start %d row_end %d\n", 
+            (int)pthread_self(), thread_d->id_thread, size_work, row_start, row_end);
+
+    for(int j=row_start; j<row_end; j++){
+        for(int i=0; i<thread_d->nb_columns; i++){  
+             thread_d->sum_cols[i] += thread_d->data_matrix[j*thread_d->nb_columns + i];
+             printf("ROW %d : sum_cols[COLS : %d] %f\n", j, i, thread_d->sum_cols[i]);
+        }
+    }
+} 
+#endif
 
 
 template <typename T>
@@ -70,26 +101,6 @@ public:
     }
     #endif
 
-    
-    /* ************************************************* PRINT MATRIX  ************************************************ */
-   void print_matrix(){
-        for(int j=0; j<n; j++){
-            for(int i=0; i<m; i++){
-                cout <<  mtx[j*m + i] << " ";
-            }
-            cout << "\n";
-        }
-        cout << "-----------------------------------\n";
-    }
-    
-     /* **************************************** PRINT SUMS OF COLUMNS OF MATRIX  *************************************** */
-    void print_op_cols_mtx(){
-        for(int i=0; i<m; i++){
-            cout <<  op_cols_mtx[i] << " ";
-        }
-        cout << "\n";
-    }
-
     /* ***************************************** OPERATOR ADDITION (TEMPLATE) ****************************************** */
     void operator+(){
 
@@ -109,7 +120,7 @@ public:
         #ifdef PTHREADS
         computing_time.start();
         pthread_t threads[nb_threads];
-        tdata_t thr_data[nb_threads];
+        struct thread_data_t<T> thr_data[nb_threads];
 
         for(int j=0; j<nb_threads; j++){
             T* sum_cols = NULL;
@@ -125,7 +136,7 @@ public:
             thr_data[j].data_matrix = mtx;
             thr_data[j].sum_cols = sum_cols;
 
-            if((pthread_create(&threads[j], NULL, sum_columns, &thr_data[j]) != 0)){
+            if((pthread_create(&threads[j], NULL, op_columns<T>, &thr_data[j]) != 0)){
                 perror("Problem when creating a thread");
             }
         }
@@ -136,7 +147,7 @@ public:
         }   
         for(int j=0; j<nb_threads; j++){
             for(int k=0; k<m; k++){
-                sum_cols_mtx[k] += thr_data[j].sum_cols[k];
+                op_cols_mtx[k] += thr_data[j].sum_cols[k];
             }
         }
         for(int j=0; j<nb_threads; j++){
@@ -146,10 +157,6 @@ public:
         computing_time.stop();
         printf("OPTIMIZED addition (with PTHREADS) computing time : %lf\n", computing_time.elapsed());
         computing_time.reset();
-        for(int k=0; k<m; k++){
-            cout <<  sum_cols_mtx[k] << " ";
-        }
-        printf("\n");
         #endif
 
 
@@ -314,6 +321,27 @@ public:
         #endif
     }
 
+
+      /* ************************************************* PRINT MATRIX  ************************************************ */
+    void print_matrix(){
+        for(int j=0; j<n; j++){
+            for(int i=0; i<m; i++){
+                cout <<  mtx[j*m + i] << " ";
+            }
+            cout << "\n";
+        }
+        cout << "-----------------------------------\n";
+    }
+    
+     /* **************************************** PRINT SUMS OF COLUMNS OF MATRIX  *************************************** */
+    void print_op_cols_mtx(){
+        for(int i=0; i<m; i++){
+            cout <<  op_cols_mtx[i] << " ";
+        }
+        cout << "\n";
+    }
+
+
     void memset_op_cols_mtx(){
         memset(op_cols_mtx, 0.0, sizeof(T)*m);
     }
@@ -327,10 +355,11 @@ protected:
     int n, m;
     T* mtx;
     T* op_cols_mtx;
-    #ifdef OPENMP
+    #if defined (OPENMP) || defined(PTHREADS)
     int nb_threads;
     #endif
 };
+ 
 
 
 #endif

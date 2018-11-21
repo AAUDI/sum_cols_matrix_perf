@@ -27,7 +27,7 @@ void matrix::sum_cols_matrix_v1(){
 }
 
 void matrix::sum_cols_matrix_openmp_v1(){
-
+    #ifdef OPENMP
     int i = 0, j = 0;
     #pragma omp parallel for private(j) schedule(dynamic) num_threads(nb_threads)
     for(int i=0; i<m; i++)
@@ -36,6 +36,7 @@ void matrix::sum_cols_matrix_openmp_v1(){
             printf("thread_ID %d SUM_COLS_[C %d][R %d] %f\n", omp_get_thread_num(), i, j, sum_cols_mtx[i]);
         }
     print_sumcols_matrix(sum_cols_mtx);
+    #endif
 }
 
 
@@ -50,7 +51,7 @@ void matrix::sum_cols_matrix_v2(){
 
 //row major access
 void matrix::sum_cols_matrix_openmp_v2(){
-
+    #ifdef OPENMP
     int i = 0, j = 0;
     #pragma omp parallel for private(i) schedule(dynamic) num_threads(nb_threads)
     for(j=0; j<n; j++){
@@ -60,6 +61,7 @@ void matrix::sum_cols_matrix_openmp_v2(){
         }
     }
     print_sumcols_matrix(sum_cols_mtx);
+    #endif
 }
 
 

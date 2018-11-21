@@ -15,7 +15,6 @@ using namespace std;
 #define MIN_RAND 0.0
 
 
-
 typedef struct thread_data{
 
     int id_thread;
