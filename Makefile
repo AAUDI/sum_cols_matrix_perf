@@ -8,25 +8,45 @@
 
 ifeq ($(TARGET_ARCH), 1)
 CXXFLAGS += -DOPENMP
+LDFLAGS += -fopenmp
 else 
 ifeq ($(TARGET_ARCH), 2)
 CXXFLAGS += -DPTHREADS
+LDFLAGS += -lpthread -fopenmp
 else
 ifeq ($(TARGET_ARCH), 3)
 CXXFLAGS += -DGPU
 else
 CXXFLAGS += -DNO_OPENMP_GPU
+LDFLAGS += -fopenmp
 endif
 endif
 endif
 CXX = g++-5
 CXXFLAGS += -std=c++11
-LDFLAGS += -lm -fopenmp -lpthread
+LDFLAGS += -lm
 OBJS = main.o matrix.o matrix_template.o OpenMPTimer.o
 
-sum_cols_matrix.bin : $(OBJS)
-	$(CXX) $(CXXFLAGS) -o main.bin $(OBJS) $(LDFLAGS)
 
+.PHONY : clean
+
+ifeq ($(TARGET_ARCH), 1)
+main_openmp.bin : $(OBJS)
+	$(CXX) $(CXXFLAGS) -o main_openmp.bin $(OBJS) $(LDFLAGS)
+else 
+ifeq ($(TARGET_ARCH), 2)
+main_pthreads.bin : $(OBJS)
+	$(CXX) $(CXXFLAGS) -o main_pthreads.bin $(OBJS) $(LDFLAGS)
+else 
+ifeq ($(TARGET_ARCH), 1)
+main_gpu.bin : $(OBJS)
+	$(CXX) $(CXXFLAGS) -o main_gpu.bin $(OBJS) $(LDFLAGS)
+else
+main_no_optimization.bin : $(OBJS)
+	$(CXX) $(CXXFLAGS) -o main_no_optimization.bin $(OBJS) $(LDFLAGS)
+endif
+endif
+endif
 main.o : main.cpp matrix.hpp matrix_template.hpp
 	$(CXX) $(CXXFLAGS) -c main.cpp  $(LDFLAGS)
 
@@ -40,4 +60,4 @@ OpenMPTimer.o : OpenMPTimer.cpp OpenMPTimer.h
 	$(CXX) $(CXXFLAGS) -c OpenMPTimer.cpp  $(LDFLAGS)
 
 clean : 
-	rm *.o *.bin
+	rm *.o

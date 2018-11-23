@@ -8,52 +8,9 @@
 #include <cstring>
 #include <iostream>
 #include <pthread.h>
+#include "pthreads_routines.hpp"
 
 using namespace std;
-#ifdef PTHREADS
-template <typename T>
-struct thread_data_t{
-    int id_thread;
-    int nb_rows;
-    int nb_columns; 
-    int nb_threads;
-    T* data_matrix;
-    T* sum_cols;
-};
-#endif
-#ifdef PTHREADS
-template <typename T>
-void* op_columns(void* thread_arg) { 
-
-    struct thread_data_t<T> *thread_d = (struct thread_data_t<T>  *) thread_arg;
-
-    int size_work = 0, row_start = 0, row_end = 0;
-    
-    size_work = thread_d->nb_rows/thread_d->nb_threads;
-    
-    if(((thread_d->nb_rows % thread_d->nb_threads) != 0) && (thread_d->id_thread == 0))
-        size_work += 1;
-        
-    row_start = thread_d->id_thread*size_work; 
-    row_end = (thread_d->id_thread+1)*size_work;   
-
-    if(((thread_d->nb_rows % thread_d->nb_threads) != 0) && (thread_d->id_thread != 0)){
-        row_start += 1;
-        row_end += 1;
-    }
-
-    printf("ID_THREAD %d, T_ID %d size_work %d row_start %d row_end %d\n", 
-            (int)pthread_self(), thread_d->id_thread, size_work, row_start, row_end);
-
-    for(int j=row_start; j<row_end; j++){
-        for(int i=0; i<thread_d->nb_columns; i++){  
-             thread_d->sum_cols[i] += thread_d->data_matrix[j*thread_d->nb_columns + i];
-             printf("ROW %d : sum_cols[COLS : %d] %f\n", j, i, thread_d->sum_cols[i]);
-        }
-    }
-} 
-#endif
-
 
 template <typename T>
 class matrix_template{
@@ -71,7 +28,7 @@ public:
 			printf("error while allocating memory for mtx\n");
 			exit(1);
 		}
-
+        printf("Generating the RANDOM MATRIX [ROWS:%d][COLS:%d]\nPlease WAIT ...\n", n, m);
         for(int j=0; j<n; j++){
             for(int i=0; i<m; i++){
                 mtx[j*m + i] = T(rand()) / double(RAND_MAX) * (max_rand - min_rand) + min_rand;
@@ -92,9 +49,10 @@ public:
 			printf("error while allocating memory for mtx\n");
 			exit(1);
 		}
-        printf("Generating the RANDOM MATRIX [ROWS:%d][COLS:%d]\nPlease WAIT ...\n", m, n);
-        for(int j=0; j<n; j++){
-            for(int i=0; i<m; i++){
+        printf("Generating the RANDOM MATRIX [ROWS:%d][COLS:%d]\nPlease WAIT ...\n", n, m);
+        int j = 0, i = 0;
+        for(j=0; j<n; j++){
+            for(i=0; i<m; i++){
                 mtx[j*m + i] = T(rand()) / double(RAND_MAX) * (max_rand - min_rand) + min_rand;
             }
         }
@@ -108,9 +66,11 @@ public:
 
         #ifdef NO_OPENMP_GPU
         computing_time.start();
-        for(int j=0; j<n; j++)
-            for(int i=0; i<m; i++)
+        for(int j=0; j<n; j++){
+            for(int i=0; i<m; i++){
                 op_cols_mtx[i] += mtx[j*m + i];
+            }
+        }
         computing_time.stop();
         printf("NON OPTIMIZED addition computing time : %lf\n", computing_time.elapsed());
         computing_time.reset();
@@ -123,8 +83,8 @@ public:
         struct thread_data_t<T> thr_data[nb_threads];
 
         for(int j=0; j<nb_threads; j++){
-            T* sum_cols = NULL;
-            if((sum_cols = (T*)malloc(m*sizeof(T))) == NULL){
+            T* op_cols = NULL;
+            if((op_cols = (T*)malloc(m*sizeof(T))) == NULL){
 	            printf("error while allocating memory for sum_cols\n");
 	            exit(1);
 	        }
@@ -134,39 +94,51 @@ public:
             thr_data[j].nb_rows = n;
             thr_data[j].nb_threads = nb_threads;
             thr_data[j].data_matrix = mtx;
-            thr_data[j].sum_cols = sum_cols;
+            thr_data[j].op_cols = op_cols;
 
-            if((pthread_create(&threads[j], NULL, op_columns<T>, &thr_data[j]) != 0)){
+            if((pthread_create(&threads[j], NULL, op_sum_columns<T>, &thr_data[j]) != 0)){
                 perror("Problem when creating a thread");
             }
         }
 
         for(int j=0; j<nb_threads; j++){
             pthread_join(threads[j], NULL);
-            printf("End of thread ID : %d\n", (int)threads[j]);
+            //printf("End of thread ID : %d\n", (int)threads[j]);
         }   
         for(int j=0; j<nb_threads; j++){
             for(int k=0; k<m; k++){
-                op_cols_mtx[k] += thr_data[j].sum_cols[k];
+                op_cols_mtx[k] += thr_data[j].op_cols[k];
             }
         }
         for(int j=0; j<nb_threads; j++){
-            free(thr_data[j].sum_cols);
+            free(thr_data[j].op_cols);
         }
-        printf("-------------------------------------------\n");
         computing_time.stop();
         printf("OPTIMIZED addition (with PTHREADS) computing time : %lf\n", computing_time.elapsed());
         computing_time.reset();
+        printf("\n");
         #endif
 
 
         #ifdef OPENMP
         int i=0, j=0;
         computing_time.start(); 
-        #pragma omp parallel for private(i) schedule(dynamic) num_threads(nb_threads)
-        for(j=0; j<n; j++)
-            for(i=0; i<m; i++)
-                op_cols_mtx[i] += mtx[j*m + i]; 
+        #pragma omp parallel num_threads(nb_threads)
+        {
+            T op_cols_mtx_private[m] = {0};
+            #pragma omp for private(i) schedule(static)
+            for(j=0; j<n; j++){
+                for(i=0; i<m; i++){
+                    op_cols_mtx_private[i] += mtx[j*m + i]; 
+                }
+            }
+            #pragma omp critical
+            {
+                for(i=0; i<m; i++){
+                    op_cols_mtx[i] += op_cols_mtx_private[i];
+                }
+            }
+        }
         computing_time.stop();
         printf("OPTIMIZED addition (with OPENMP) computing time : %lf\n", computing_time.elapsed());
         computing_time.reset();
@@ -186,26 +158,100 @@ public:
 
         #ifdef NO_OPENMP_GPU
         computing_time.start();
-        for(int i=0; i<m; i++)
+        for(int i=0; i<m; i++){
             op_cols_mtx[i] = mtx[i];
-        for(int j=1; j<n; j++)
-            for(int i=0; i<m; i++)
+        }
+        for(int j=1; j<n; j++){
+            for(int i=0; i<m; i++){
                 op_cols_mtx[i] -= mtx[j*m + i];
+            }
+        }
         computing_time.stop();
         printf("NON OPTIMIZED substraction computing time : %lf\n", computing_time.elapsed());
         computing_time.reset();
         #endif
 
+
+        #ifdef PTHREADS
+        computing_time.start();
+
+        pthread_t threads[nb_threads];
+        struct thread_data_t<T> thr_data[nb_threads];
+
+        for(int j=0; j<nb_threads; j++){
+            T* op_cols = NULL;
+            if((op_cols = (T*)malloc(m*sizeof(T))) == NULL){
+	            printf("error while allocating memory for sub_cols\n");
+	            exit(1);
+	        }
+
+            thr_data[j].id_thread = j;
+            thr_data[j].nb_columns = m;
+            thr_data[j].nb_rows = n;
+            thr_data[j].nb_threads = nb_threads;
+            thr_data[j].data_matrix = mtx;
+            thr_data[j].op_cols = op_cols;
+
+            if((pthread_create(&threads[j], NULL, op_sub_columns<T>, &thr_data[j]) != 0)){
+                perror("Problem when creating a thread");
+            }
+        }
+
+        for(int j=0; j<nb_threads; j++){
+            pthread_join(threads[j], NULL);
+            //printf("End of thread ID : %d\n", (int)threads[j]);
+        }   
+        for(int j=0; j<nb_threads; j++){
+            for(int k=0; k<m; k++){
+                op_cols_mtx[k] += thr_data[j].op_cols[k];
+            }
+        }
+        for(int j=0; j<nb_threads; j++){
+            free(thr_data[j].op_cols);
+        }
+        computing_time.stop();
+        printf("OPTIMIZED substraction (with PTHREADS) computing time : %lf\n", computing_time.elapsed());
+        computing_time.reset();
+        printf("\n");
+        #endif
+
+
         #ifdef OPENMP    
-        computing_time.start();  
-        for(int i=0; i<m; i++)
-            op_cols_mtx[i] = mtx[i];
-        int i=0, j=0; 
-        #pragma omp parallel for private(i) schedule(dynamic) num_threads(nb_threads)
-        for(j=1; j<n; j++){
-            for(i=0; i<m; i++){
-                op_cols_mtx[i] -= mtx[j*m + i];
-            }   
+        computing_time.start();       
+        #pragma omp parallel num_threads(nb_threads)
+        {
+            int i=0, j=0;
+            int row_start_thread = 0;
+            int size_per_thread = n/nb_threads;
+            T op_cols_mtx_private[m] = {0};
+            row_start_thread = omp_get_thread_num()*(size_per_thread);
+          
+            //initialization of private array for each thread!
+            #pragma omp master
+            {
+                for(int k=0; k<m; k++){
+                    op_cols_mtx_private[k] = mtx[row_start_thread*m + k];
+                }
+            }
+            if(omp_get_thread_num() != 0){
+                for(int k=0; k<m; k++){
+                    op_cols_mtx_private[k] = -mtx[row_start_thread*m + k];
+                }
+            }
+            #pragma omp for private(i) schedule(static, size_per_thread)
+            for(j=0; j<n; j++){
+                for(i=0; i<m; i++){
+                    if(j != row_start_thread){
+                        op_cols_mtx_private[i] -= mtx[j*m + i]; 
+                    }
+                }
+            }
+            #pragma omp critical
+            {
+                for(i=0; i<m; i++){
+                    op_cols_mtx[i] += op_cols_mtx_private[i];
+                }
+            }
         }
         computing_time.stop();
         printf("OPTIMIZED substraction (with OPENMP) computing time : %lf\n", computing_time.elapsed());
@@ -244,17 +290,90 @@ public:
         computing_time.reset();
         #endif
 
-        #ifdef OPENMP
-        computing_time.start(); 
-        for(int i=0; i<m; i++){
-            op_cols_mtx[i] = mtx[i];
+
+        #ifdef PTHREADS
+        computing_time.start();
+        pthread_t threads[nb_threads];
+        struct thread_data_t<T> thr_data[nb_threads];
+
+        for(int k=0; k<m; k++)
+             op_cols_mtx[k] = 1;
+
+
+        for(int j=0; j<nb_threads; j++){
+            T* op_cols = NULL;
+            if((op_cols = (T*)malloc(m*sizeof(T))) == NULL){
+	            printf("error while allocating memory for mul_cols\n");
+	            exit(1);
+	        }
+
+            thr_data[j].id_thread = j;
+            thr_data[j].nb_columns = m;
+            thr_data[j].nb_rows = n;
+            thr_data[j].nb_threads = nb_threads;
+            thr_data[j].data_matrix = mtx;
+            thr_data[j].op_cols = op_cols;
+
+            for(int k=0; k<m; k++)
+                 thr_data[j].op_cols[k] = 1;
+
+
+            if((pthread_create(&threads[j], NULL, op_mul_columns<T>, &thr_data[j]) != 0)){
+                perror("Problem when creating a thread");
+            }
         }
-        int i=0, j=0; 
-        #pragma omp parallel for private(i) schedule(dynamic) num_threads(nb_threads)
-        for(j=1; j<n; j++){
-            for(i=0; i<m; i++){
-                op_cols_mtx[i] *= mtx[j*m + i];
-            }   
+
+        for(int j=0; j<nb_threads; j++){
+            pthread_join(threads[j], NULL);
+            //printf("End of thread ID : %d\n", (int)threads[j]);
+        }   
+        for(int j=0; j<nb_threads; j++){
+            for(int k=0; k<m; k++){
+                op_cols_mtx[k] *= thr_data[j].op_cols[k];
+            }
+        }
+        for(int j=0; j<nb_threads; j++){
+            free(thr_data[j].op_cols);
+        }
+        computing_time.stop();
+        printf("OPTIMIZED multiplication (with PTHREADS) computing time : %lf\n", computing_time.elapsed());
+        computing_time.reset();
+        printf("\n");
+        #endif
+
+        #ifdef OPENMP
+        computing_time.start();
+        for(int k=0; k<m; k++){
+            op_cols_mtx[k] = 1;
+        }
+        #pragma omp parallel num_threads(nb_threads)
+        {
+            int i=0, j=0;
+            int row_start_thread = 0;
+            int size_per_thread = n/nb_threads;
+            T op_cols_mtx_private[m] = {0};
+            row_start_thread = omp_get_thread_num()*(size_per_thread);
+          
+            //initialization of private array for each thread!
+            for(int k=0; k<m; k++){
+                op_cols_mtx_private[k] = mtx[row_start_thread*m + k];
+            }
+
+            #pragma omp for private(i) schedule(static, size_per_thread)
+            for(j=0; j<n; j++){
+                for(i=0; i<m; i++){
+                    if(j != row_start_thread){
+                        op_cols_mtx_private[i] *= mtx[j*m + i]; 
+                    }
+                }
+            }
+
+            #pragma omp critical
+            {
+                for(i=0; i<m; i++){
+                    op_cols_mtx[i] *= op_cols_mtx_private[i];
+                }
+            }
         }
         computing_time.stop();
         printf("OPTIMIZED multiplication (with OPENMP) computing time : %lf\n", computing_time.elapsed());
@@ -272,55 +391,6 @@ public:
         }
         #endif
     }
-     /* ****************************************** OPERATOR DIVISION (TEMPLATE) ****************************************** */
-    void operator/(int k){
-
-        OpenMPTimer computing_time;
-
-        #ifdef NO_OPENMP_GPU
-        computing_time.start(); 
-        for(int i=0; i<m; i++){
-            op_cols_mtx[i] = mtx[i];
-        }
-        for(int j=1; j<n; j++){
-            for(int i=0; i<m; i++){
-                op_cols_mtx[i] /= mtx[j*m + i];
-            }   
-        }
-        computing_time.stop();
-        printf("NON OPTIMIZED division computing time : %lf\n", computing_time.elapsed());
-        computing_time.reset();
-        #endif
-
-        #ifdef OPENMP
-        computing_time.start(); 
-        for(int i=0; i<m; i++){
-            op_cols_mtx[i] = mtx[i];
-        }  
-        int i=0, j=0; 
-        #pragma omp parallel for private(i) schedule(dynamic) num_threads(nb_threads)
-        for(j=1; j<n; j++){
-            for(i=0; i<m; i++){
-                op_cols_mtx[i] /= mtx[j*m + i];
-            }   
-        }
-        computing_time.stop();
-        printf("OPTIMIZED division (with OPENMP) computing time : %lf\n", computing_time.elapsed());
-        computing_time.reset();
-        #endif
-
-        #ifdef GPU
-        for(int i=0; i<m; i++){
-            op_cols_mtx[i] = mtx[i];
-        }
-        for(int j=1; j<n; j++){
-            for(int i=0; i<m; i++){
-                op_cols_mtx[i] /= mtx[j*m + i];
-            }   
-        }
-        #endif
-    }
-
 
       /* ************************************************* PRINT MATRIX  ************************************************ */
     void print_matrix(){
@@ -339,6 +409,7 @@ public:
             cout <<  op_cols_mtx[i] << " ";
         }
         cout << "\n";
+        cout << "-----------------------------------\n";
     }
 
 
