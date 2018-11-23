@@ -15,7 +15,7 @@ using namespace std;
 #define MIN_RAND 0.0
 
 
-typedef struct thread_data{
+struct thread_data{
 
     int id_thread;
     int nb_rows;
@@ -23,7 +23,7 @@ typedef struct thread_data{
     int nb_threads;
     float* data_matrix;
     float* sum_cols;
-}tdata_t;
+};
 
 
 class matrix
@@ -52,10 +52,9 @@ class matrix
         void print_matrix();
         void print_sumcols_matrix(float* sum_cols_mtx);
         void sum_cols_matrix_v1();
-        void sum_cols_matrix_openmp_v1();
         void sum_cols_matrix_v2();
         void sum_cols_matrix_openmp_v2();
-        void sum_cols_matrix_pthreads();
+        void sum_cols_matrix_pthreads_v2();
         void memset_sum_cols_mtx();
 
 
