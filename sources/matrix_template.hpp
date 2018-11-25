@@ -9,6 +9,8 @@
 #include <iostream>
 #include <pthread.h>
 #include "OpenMPTimer.h"
+#include "kokkos_shared.h"
+#include "kokkos_functor.h"
 
 
 using namespace std;
@@ -39,14 +41,47 @@ public:
 
     /* ***************************************** OPERATOR ADDITION (TEMPLATE) ****************************************** */
     void operator+(){
+        
+        Kokkos::InitArguments args;
+        args.num_threads = nb_threads; 
+        args.num_numa = 1;
+        args.device_id = 0;
+        Kokkos::initialize(args);
+        {
+          std::ostringstream msg;
+          //std::cout << "Kokkos configuration" << std::endl;
+          if ( Kokkos::hwloc::available() ) {
+              msg << "  hwloc( NUMA[" << Kokkos::hwloc::get_available_numa_count()
+                  << "  ] x CORE["    << Kokkos::hwloc::get_available_cores_per_numa()
+                  << "  ] x HT["      << Kokkos::hwloc::get_available_threads_per_core()
+                  << "  ] )"
+                  << std::endl ;
+          }
+          //Kokkos::print_configuration( std::cout );
+          //std::cout << msg.str();
+	    }
         OpenMPTimer computing_time;
+        
+        DataArrayMTX kmtx = DataArrayMTX("matrix", m*n);
+        DataArrayMTXHost kmtxHost = Kokkos::create_mirror_view(kmtx);
 
-        computing_time.start();
         for(int j=0; j<n; j++){
             for(int i=0; i<m; i++){
-                op_cols_mtx[i] += mtx[j*m + i];
+                kmtxHost[j*m + i] = mtx[j*m + i];
             }
         }
+        computing_time.start();
+        Kokkos::deep_copy(kmtx, kmtxHost);
+        DataArraySUMCOLS ksumcols = DataArraySUMCOLS("sum of matrix columns", m);
+	    DataArraySUMCOLSHost ksumcolsHost = Kokkos::create_mirror_view(ksumcols);
+        SumColsMatrix functor_sum_cols_mtx(kmtx, ksumcols, m, n);
+        Kokkos::parallel_for(m*n, functor_sum_cols_mtx);
+        Kokkos::deep_copy(ksumcolsHost, ksumcols);
+        // printf("--------------------------------\n");
+        // for(int i=0; i<m; i++){
+        //     printf("%f ", ksumcolsHost[i]);
+        // }
+
         computing_time.stop();
         printf("NON OPTIMIZED addition computing time : %lf\n", computing_time.elapsed());
         computing_time.reset();
