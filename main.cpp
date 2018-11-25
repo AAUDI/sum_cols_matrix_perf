@@ -23,72 +23,14 @@ int main(int argc, char **argv) {
 
     printf("NB_ROWS_MATRIX %d NB_COLUMNS_MATRIX %d NB_THREADS %d\n", nb_rows_matrix, nb_cols_matrix, nb_threads);
 
-    // matrix m(nb_cols_matrix, nb_rows_matrix, nb_threads);
-    // m.print_matrix();
-    // printf("--------------------------------------------------------------------------------\n");
-    // printf("\n");
-    // printf("\n");
-    // printf("\n");
-    // printf("\n");
-    
-    // OpenMPTimer t_sum_cols_matrix;
-    
-    
-    // printf("------------------------- SUM COLS MATRIX COLUMN MAJOR -------------------------\n");
-    // t_sum_cols_matrix.start();
-    // m.sum_cols_matrix_v1();
-    // t_sum_cols_matrix.stop();
-    // printf("TIME %lf\n", t_sum_cols_matrix.elapsed());
-    // t_sum_cols_matrix.reset();
-    // printf("--------------------------------------------------------------------------------\n");
-    // printf("\n");
-    // printf("\n");
-    // printf("\n");
-    // printf("\n");
-    // m.memset_sum_cols_mtx();
-    // m.sum_cols_matrix_pthreads();
-
-    // printf("----------------------- SUM COLS MATRIX OPENMP COLUMN MAJOR -----------------------\n");
-    // t_sum_cols_matrix.start();
-    // m.sum_cols_matrix_openmp_v1();
-    // t_sum_cols_matrix.stop();
-    // printf("TIME %lf\n", t_sum_cols_matrix.elapsed());
-    // t_sum_cols_matrix.reset();
-      
-    // printf("--------------------------------------------------------------------------------\n");
-    // printf("\n");
-    // printf("\n");
-    // printf("\n");
-    // printf("\n");
-    // m.memset_sum_cols_mtx();
-
-    // printf("--------------------------- SUM COLS MATRIX ROW MAJOR --------------------------\n");
-    // t_sum_cols_matrix.start();
-    // m.sum_cols_matrix_v2();
-    // t_sum_cols_matrix.stop();
-    // printf("TIME %lf\n", t_sum_cols_matrix.elapsed());
-    // t_sum_cols_matrix.reset();
 
 
-    // printf("--------------------------------------------------------------------------------\n");
-    // printf("\n");
-    // printf("\n");
-    // printf("\n");
-    // printf("\n");
-    // m.memset_sum_cols_mtx();
-    // printf("----------------------- SUM COLS MATRIX OPENMP ROW MAJOR -----------------------\n");
-    // t_sum_cols_matrix.start();
-    // m.sum_cols_matrix_openmp_v2();
-    // t_sum_cols_matrix.stop();
-    // printf("TIME %lf\n", t_sum_cols_matrix.elapsed());
-    // t_sum_cols_matrix.reset();
-    // printf("--------------------------------------------------------------------------------\n");
-    // m.memset_sum_cols_mtx();
-
+/* ******************************* RANDOM MATRIX ******************************* */ 
     #ifdef NO_OPENMP_GPU
-    matrix_template<float> m(nb_cols_matrix, nb_rows_matrix, 0.0, 100.0);
-    m.print_matrix();
+    matrix_template<int> m(nb_cols_matrix, nb_rows_matrix, 0.0, 100.0);
+    //m.print_matrix();
     +m;
+
     m.print_op_cols_mtx();
     m.memset_op_cols_mtx();  
     //-m;
@@ -100,8 +42,8 @@ int main(int argc, char **argv) {
     #endif
 
     #if defined (OPENMP) || defined(PTHREADS)
-    matrix_template<float> m(nb_cols_matrix, nb_rows_matrix, nb_threads, 0.0, 100.0);
-    m.print_matrix();
+    matrix_template<int> m(nb_cols_matrix, nb_rows_matrix, nb_threads, 0.0, 100.0);
+    //m.print_matrix();
     +m;
     m.print_op_cols_mtx();
     m.memset_op_cols_mtx();   

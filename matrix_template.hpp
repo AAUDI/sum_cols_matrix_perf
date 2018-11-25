@@ -10,6 +10,7 @@
 #include <pthread.h>
 #include "pthreads_routines.hpp"
 
+
 using namespace std;
 
 template <typename T>
@@ -31,7 +32,7 @@ public:
         printf("Generating the RANDOM MATRIX [ROWS:%d][COLS:%d]\nPlease WAIT ...\n", n, m);
         for(int j=0; j<n; j++){
             for(int i=0; i<m; i++){
-                mtx[j*m + i] = T(rand()) / double(RAND_MAX) * (max_rand - min_rand) + min_rand;
+                mtx[j*m + i] = 1;//T(rand()) / double(RAND_MAX) * (max_rand - min_rand) + min_rand;
             }
         }
     }
@@ -53,7 +54,7 @@ public:
         int j = 0, i = 0;
         for(j=0; j<n; j++){
             for(i=0; i<m; i++){
-                mtx[j*m + i] = T(rand()) / double(RAND_MAX) * (max_rand - min_rand) + min_rand;
+                mtx[j*m + i] = 1;//T(rand()) / double(RAND_MAX) * (max_rand - min_rand) + min_rand;
             }
         }
     }
@@ -61,7 +62,6 @@ public:
 
     /* ***************************************** OPERATOR ADDITION (TEMPLATE) ****************************************** */
     void operator+(){
-
         OpenMPTimer computing_time;
 
         #ifdef NO_OPENMP_GPU
@@ -126,7 +126,7 @@ public:
         #pragma omp parallel num_threads(nb_threads)
         {
             T op_cols_mtx_private[m] = {0};
-            #pragma omp for private(i) schedule(static)
+            #pragma omp for simd private(i) schedule(static)
             for(j=0; j<n; j++){
                 for(i=0; i<m; i++){
                     op_cols_mtx_private[i] += mtx[j*m + i]; 
@@ -406,7 +406,9 @@ public:
      /* **************************************** PRINT SUMS OF COLUMNS OF MATRIX  *************************************** */
     void print_op_cols_mtx(){
         for(int i=0; i<m; i++){
-            cout <<  op_cols_mtx[i] << " ";
+            if(i>=0 && i<=9){
+                cout << op_cols_mtx[i] << " ";
+            }
         }
         cout << "\n";
         cout << "-----------------------------------\n";
