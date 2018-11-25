@@ -86,9 +86,9 @@ public:
         
         printf("--------------------------------\n");
         for(int i=0; i<m; ++i){
-            //if(i>=0 && i<=9){
+            if(i>=0 && i<=9){
                 cout << ksumcolsHost(i) << " ";//printf("%f ", ksumcolsHost[i]);
-            //}
+            }
         }
         printf("\n");
         Kokkos::finalize();
