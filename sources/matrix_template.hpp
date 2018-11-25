@@ -87,7 +87,7 @@ public:
         printf("--------------------------------\n");
         for(int i=0; i<m; ++i){
             if(i>=0 && i<=9){
-                cout << ksumcolsHost(i) << " ";//printf("%f ", ksumcolsHost[i]);
+                cout << ksumcolsHost(i) << " ";
             }
         }
         printf("\n");
