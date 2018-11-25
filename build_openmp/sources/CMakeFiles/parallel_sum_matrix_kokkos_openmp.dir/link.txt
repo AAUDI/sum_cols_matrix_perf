@@ -1,0 +1,1 @@
+/usr/bin/c++  -O3 -DNDEBUG   CMakeFiles/parallel_sum_matrix_kokkos_openmp.dir/main.cpp.o CMakeFiles/parallel_sum_matrix_kokkos_openmp.dir/matrix_template.cpp.o CMakeFiles/parallel_sum_matrix_kokkos_openmp.dir/OpenMPTimer.cpp.o  -o parallel_sum_matrix_kokkos_openmp ../kokkos/libkokkos.a /usr/lib/x86_64-linux-gnu/libdl.so /usr/lib/x86_64-linux-gnu/librt.so -fopenmp 
