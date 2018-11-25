@@ -34,7 +34,7 @@ public:
         int j = 0, i = 0;
         for(j=0; j<n; j++){
             for(i=0; i<m; i++){
-                mtx[j*m + i] = T(rand()) / double(RAND_MAX) * (max_rand - min_rand) + min_rand;
+                mtx[j*m + i] = 1;//T(rand()) / double(RAND_MAX) * (max_rand - min_rand) + min_rand;
             }
         }
     }
@@ -67,24 +67,31 @@ public:
 
         for(int j=0; j<n; j++){
             for(int i=0; i<m; i++){
-                kmtxHost[j*m + i] = mtx[j*m + i];
+                kmtxHost(j*m + i) = mtx[j*m + i];
             }
         }
-        computing_time.start();
         Kokkos::deep_copy(kmtx, kmtxHost);
+  
         DataArraySUMCOLS ksumcols = DataArraySUMCOLS("sum of matrix columns", m);
-	    DataArraySUMCOLSHost ksumcolsHost = Kokkos::create_mirror_view(ksumcols);
+        DataArraySUMCOLSHost ksumcolsHost = Kokkos::create_mirror_view(ksumcols);
+
+        computing_time.start();
         SumColsMatrix functor_sum_cols_mtx(kmtx, ksumcols, m, n);
         Kokkos::parallel_for(m*n, functor_sum_cols_mtx);
-        Kokkos::deep_copy(ksumcolsHost, ksumcols);
-        // printf("--------------------------------\n");
-        // for(int i=0; i<m; i++){
-        //     printf("%f ", ksumcolsHost[i]);
-        // }
-
         computing_time.stop();
+        
+        Kokkos::deep_copy(ksumcolsHost, ksumcols);
         printf("NON OPTIMIZED addition computing time : %lf\n", computing_time.elapsed());
         computing_time.reset();
+        
+        printf("--------------------------------\n");
+        for(int i=0; i<m; ++i){
+            //if(i>=0 && i<=9){
+                cout << ksumcolsHost(i) << " ";//printf("%f ", ksumcolsHost[i]);
+            //}
+        }
+        printf("\n");
+        Kokkos::finalize();
        
     }
 
@@ -128,21 +135,22 @@ public:
       /* ************************************************* PRINT MATRIX  ************************************************ */
     void print_matrix(){
         for(int j=0; j<n; j++){
+            printf("%d:: ", j);
             for(int i=0; i<m; i++){
-                cout <<  mtx[j*m + i] << " ";
+                cout << mtx[j*m + i] << " ";//printf("%f ", mtx[j*m + i]);
             }
-            cout << "\n";
+           printf("\n");
         }
-        cout << "-----------------------------------\n";
+        printf("-----------------------------------\n");
     }
     
      /* **************************************** PRINT SUMS OF COLUMNS OF MATRIX  *************************************** */
     void print_op_cols_mtx(){
         for(int i=0; i<m; i++){
-            cout <<  op_cols_mtx[i] << " ";
+            cout << op_cols_mtx[i] << " ";//printf("%f ", op_cols_mtx[i]);
         }
-        cout << "\n";
-        cout << "-----------------------------------\n";
+        printf("\n");
+        printf("-----------------------------------\n");
     }
 
 

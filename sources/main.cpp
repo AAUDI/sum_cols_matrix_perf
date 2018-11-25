@@ -26,11 +26,11 @@ int main(int argc, char **argv) {
 /* ******************************* RANDOM MATRIX ******************************* */ 
 
 
-    matrix_template<float> m(nb_cols_matrix, nb_rows_matrix, nb_threads, 0.0, 100.0);
+    matrix_template<int> m(nb_cols_matrix, nb_rows_matrix, nb_threads, 0.0, 100.0);
     //m.print_matrix();
     +m;
     //m.print_op_cols_mtx();
-    //m.memset_op_cols_mtx();   
+    m.memset_op_cols_mtx();   
     // -m;
     // m.print_op_cols_mtx();
     // m.memset_op_cols_mtx();

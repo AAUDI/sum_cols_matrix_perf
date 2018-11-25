@@ -10,13 +10,13 @@ using Device = Kokkos::DefaultExecutionSpace;
 
 /************************************************/
 // Data array for matrix
-typedef Kokkos::View<float*, Device> DataArrayMTX;
+typedef Kokkos::View<int*, Device > DataArrayMTX;
 // host mirror
 typedef DataArrayMTX::HostMirror DataArrayMTXHost;
 
 
 // Data array for sum of columns of matrix
-typedef Kokkos::View<float*, Device> DataArraySUMCOLS;
+typedef Kokkos::View<int*, Device, Kokkos::MemoryTraits<Kokkos::Atomic>> DataArraySUMCOLS;
 // host mirror
 typedef DataArraySUMCOLS::HostMirror DataArraySUMCOLSHost;
 
