@@ -1,0 +1,6 @@
+# CMake generated Testfile for 
+# Source directory: /home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/containers
+# Build directory: /home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_gpu/kokkos/containers
+# 
+# This file includes the relevant testing commands required for 
+# testing this directory and lists subdirectories to be tested as well.

@@ -53,7 +53,7 @@ set_target_properties(kokkos PROPERTIES
 set_property(TARGET kokkos APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(kokkos PROPERTIES
   IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
-  IMPORTED_LOCATION_RELEASE "/home/aaudi/work/work_numscale_kokkos/build_openmp/kokkos/libkokkos.a"
+  IMPORTED_LOCATION_RELEASE "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/kokkos/libkokkos.a"
   )
 
 # This file does not depend on other imported targets which have

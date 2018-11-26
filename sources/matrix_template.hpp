@@ -8,7 +8,11 @@
 #include <cstring>
 #include <iostream>
 #include <pthread.h>
+#ifdef KOKKOS_ENABLE_OPENMP
 #include "OpenMPTimer.h"
+#else
+#include "CudaTimer.h" 
+#endif
 #include "kokkos_shared.h"
 #include "kokkos_functor.h"
 
@@ -60,7 +64,11 @@ public:
           //Kokkos::print_configuration( std::cout );
           //std::cout << msg.str();
 	    }
+        #ifdef KOKKOS_ENABLE_CUDA
+        CudaTimer computing_time;
+        #else
         OpenMPTimer computing_time;
+        #endif
         
         DataArrayMTX kmtx = DataArrayMTX("matrix", m*n);
         DataArrayMTXHost kmtxHost = Kokkos::create_mirror_view(kmtx);
@@ -72,8 +80,8 @@ public:
         }
         Kokkos::deep_copy(kmtx, kmtxHost);
   
-        DataArraySUMCOLS ksumcols = DataArraySUMCOLS("sum of matrix columns", m);
-        DataArraySUMCOLSHost ksumcolsHost = Kokkos::create_mirror_view(ksumcols);
+        DataArraySUMCOLS_atomic ksumcols = DataArraySUMCOLS_atomic("sum of matrix columns", m);
+        DataArraySUMCOLS_atomicHost ksumcolsHost = Kokkos::create_mirror_view(ksumcols);
 
         computing_time.start();
         SumColsMatrix functor_sum_cols_mtx(kmtx, ksumcols, m, n);
@@ -98,7 +106,12 @@ public:
     /* ****************************************** OPERATOR SUBSTRACTION (TEMPLATE) ****************************************** */
     void operator-(){
 
+        #ifdef KOKKOS_ENABLE_OPENMP
         OpenMPTimer computing_time;
+        #endif
+        #ifdef KOKKOS_ENABLE_CUDA
+        CudaTimer computing_time;
+        #endif
 
         computing_time.start();
         for(int i=0; i<m; i++){
@@ -117,7 +130,12 @@ public:
     /* ****************************************** OPERATOR MULTIPLICATION (TEMPLATE) ****************************************** */
     void operator*(){
 
+        #ifdef KOKKOS_ENABLE_OPENMP
         OpenMPTimer computing_time;
+        #endif
+        #ifdef KOKKOS_ENABLE_CUDA
+        CudaTimer computing_time;
+        #endif
         computing_time.start(); 
         for(int i=0; i<m; i++){
             op_cols_mtx[i] = mtx[i];

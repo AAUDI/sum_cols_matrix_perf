@@ -1486,11 +1486,11 @@ impl/Kokkos_Profiling_Interface.hpp
 
 ../kokkos/core/src/impl/Kokkos_Volatile_Load.hpp
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/containers/src/impl/Kokkos_UnorderedMap_impl.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/containers/src/impl/Kokkos_UnorderedMap_impl.cpp
 Kokkos_UnorderedMap.hpp
 -
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/OpenMP/Kokkos_OpenMP_Exec.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/OpenMP/Kokkos_OpenMP_Exec.cpp
 Kokkos_Macros.hpp
 -
 cstdio
@@ -1512,7 +1512,7 @@ impl/Kokkos_CPUDiscovery.hpp
 impl/Kokkos_Profiling_Interface.hpp
 -
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/OpenMP/Kokkos_OpenMP_Task.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/OpenMP/Kokkos_OpenMP_Task.cpp
 Kokkos_Macros.hpp
 -
 Kokkos_Core.hpp
@@ -1522,7 +1522,7 @@ impl/Kokkos_TaskQueue_impl.hpp
 impl/Kokkos_HostThreadTeam.hpp
 -
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/impl/Kokkos_CPUDiscovery.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/impl/Kokkos_CPUDiscovery.cpp
 windows.h
 -
 unistd.h
@@ -1536,7 +1536,7 @@ cstring
 cerrno
 -
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/impl/Kokkos_Core.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/impl/Kokkos_Core.cpp
 Kokkos_Core.hpp
 -
 impl/Kokkos_Error.hpp
@@ -1554,7 +1554,7 @@ cstdlib
 stack
 -
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/impl/Kokkos_Error.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/impl/Kokkos_Error.cpp
 cstdio
 -
 cstring
@@ -1582,11 +1582,11 @@ dlfcn.h
 cstdlib
 -
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/impl/Kokkos_ExecPolicy.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/impl/Kokkos_ExecPolicy.cpp
 Kokkos_Core.hpp
 -
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/impl/Kokkos_HostBarrier.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/impl/Kokkos_HostBarrier.cpp
 Kokkos_Macros.hpp
 -
 Kokkos_Atomic.hpp
@@ -1598,7 +1598,7 @@ impl/Kokkos_Spinwait.hpp
 chrono
 -
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/impl/Kokkos_HostSpace.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/impl/Kokkos_HostSpace.cpp
 algorithm
 -
 Kokkos_Macros.hpp
@@ -1632,7 +1632,7 @@ Kokkos_Atomic.hpp
 immintrin.h
 -
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/impl/Kokkos_HostThreadTeam.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/impl/Kokkos_HostThreadTeam.cpp
 limits
 -
 Kokkos_Macros.hpp
@@ -1644,7 +1644,7 @@ impl/Kokkos_Error.hpp
 impl/Kokkos_Spinwait.hpp
 -
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/impl/Kokkos_MemoryPool.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/impl/Kokkos_MemoryPool.cpp
 ostream
 -
 sstream
@@ -1652,7 +1652,7 @@ sstream
 impl/Kokkos_Error.hpp
 -
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/impl/Kokkos_Profiling_Interface.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/impl/Kokkos_Profiling_Interface.cpp
 Kokkos_Macros.hpp
 -
 impl/Kokkos_Profiling_Interface.hpp
@@ -1664,7 +1664,7 @@ impl/Kokkos_Profiling_Interface.hpp
 cstring
 -
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/impl/Kokkos_Serial.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/impl/Kokkos_Serial.cpp
 Kokkos_Macros.hpp
 -
 cstdlib
@@ -1680,7 +1680,7 @@ impl/Kokkos_Error.hpp
 impl/Kokkos_SharedAlloc.hpp
 -
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/impl/Kokkos_Serial_Task.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/impl/Kokkos_Serial_Task.cpp
 Kokkos_Macros.hpp
 -
 Kokkos_Core.hpp
@@ -1690,11 +1690,11 @@ impl/Kokkos_Serial_Task.hpp
 impl/Kokkos_TaskQueue_impl.hpp
 -
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/impl/Kokkos_SharedAlloc.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/impl/Kokkos_SharedAlloc.cpp
 Kokkos_Core.hpp
 -
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/impl/Kokkos_Spinwait.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/impl/Kokkos_Spinwait.cpp
 Kokkos_Macros.hpp
 -
 Kokkos_Atomic.hpp
@@ -1716,7 +1716,7 @@ winsock2.h
 windows.h
 -
 
-/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/impl/Kokkos_hwloc.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/impl/Kokkos_hwloc.cpp
 iostream
 -
 sstream

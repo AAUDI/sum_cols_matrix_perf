@@ -4,14 +4,14 @@
 
 
 # Configuration directories and files
-SourceDirectory: /home/aaudi/work/work_numscale_kokkos/kokkos
-BuildDirectory: /home/aaudi/work/work_numscale_kokkos/build_openmp/kokkos
+SourceDirectory: /home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos
+BuildDirectory: /home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/kokkos
 
 # Where to place the cost data store
 CostDataFile: 
 
 # Site is something like machine.domain, i.e. pragmatic.crd
-Site: DEEPAUDI
+Site: aaudi-Precision-T5610
 
 # Build name is osname-revision-compiler, i.e. Linux-2.4.2-2smp-c++
 BuildName: Linux-c++
@@ -36,7 +36,7 @@ ScpCommand: /usr/bin/scp
 NightlyStartTime: 00:00:00 EDT
 
 # Commands for the build/test/submit cycle
-ConfigureCommand: "/usr/bin/cmake" "/home/aaudi/work/work_numscale_kokkos/kokkos"
+ConfigureCommand: "/usr/bin/cmake" "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos"
 MakeCommand: /usr/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}"
 DefaultCTestConfigurationType: Release
 
@@ -73,7 +73,7 @@ UpdateType: git
 
 # Compiler info
 Compiler: /usr/bin/c++
-CompilerVersion: 8.2.0
+CompilerVersion: 5.5.0
 
 # Dynamic analysis (MemCheck)
 PurifyCommand: 

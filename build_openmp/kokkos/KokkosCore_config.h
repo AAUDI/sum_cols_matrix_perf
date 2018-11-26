@@ -1,6 +1,6 @@
 /* ---------------------------------------------
 Makefile constructed configuration:
-dimanche 25 novembre 2018, 01:15:58 (UTC+0100)
+lundi 26 novembre 2018, 11:17:35 (UTC+0100)
 ----------------------------------------------*/
 #if !defined(KOKKOS_MACROS_HPP) || defined(KOKKOS_CORE_CONFIG_H)
 #error "Do not include KokkosCore_config.h directly; include Kokkos_Macros.hpp instead."

@@ -1,4 +1,4 @@
-# Install script for directory: /home/aaudi/work/work_numscale_kokkos/kokkos
+# Install script for directory: /home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -46,35 +46,35 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/usr/local/lib" TYPE STATIC_LIBRARY FILES "/home/aaudi/work/work_numscale_kokkos/build_openmp/kokkos/libkokkos.a")
+file(INSTALL DESTINATION "/usr/local/lib" TYPE STATIC_LIBRARY FILES "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/kokkos/libkokkos.a")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/kokkos" TYPE DIRECTORY FILES
-    "/home/aaudi/work/work_numscale_kokkos/kokkos/EXPORT"
-    "/home/aaudi/work/work_numscale_kokkos/kokkos/KokkosTargets"
-    "/home/aaudi/work/work_numscale_kokkos/kokkos/core/src/"
+    "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/EXPORT"
+    "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/KokkosTargets"
+    "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core/src/"
     FILES_MATCHING REGEX "/[^/]*\\.hpp$")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/kokkos" TYPE DIRECTORY FILES
-    "/home/aaudi/work/work_numscale_kokkos/kokkos/EXPORT"
-    "/home/aaudi/work/work_numscale_kokkos/kokkos/KokkosTargets"
-    "/home/aaudi/work/work_numscale_kokkos/kokkos/containers/src/"
+    "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/EXPORT"
+    "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/KokkosTargets"
+    "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/containers/src/"
     FILES_MATCHING REGEX "/[^/]*\\.hpp$")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/kokkos" TYPE DIRECTORY FILES
-    "/home/aaudi/work/work_numscale_kokkos/kokkos/EXPORT"
-    "/home/aaudi/work/work_numscale_kokkos/kokkos/KokkosTargets"
-    "/home/aaudi/work/work_numscale_kokkos/kokkos/algorithms/src/"
+    "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/EXPORT"
+    "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/KokkosTargets"
+    "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/algorithms/src/"
     FILES_MATCHING REGEX "/[^/]*\\.hpp$")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/kokkos" TYPE FILE FILES "/home/aaudi/work/work_numscale_kokkos/build_openmp/kokkos/KokkosCore_config.h")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/kokkos" TYPE FILE FILES "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/kokkos/KokkosCore_config.h")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -86,14 +86,14 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/usr/local/lib/CMake/Kokkos" TYPE FILE FILES "/home/aaudi/work/work_numscale_kokkos/build_openmp/kokkos/CMakeFiles/KokkosConfig.cmake")
+file(INSTALL DESTINATION "/usr/local/lib/CMake/Kokkos" TYPE FILE FILES "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/kokkos/CMakeFiles/KokkosConfig.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   if(EXISTS "$ENV{DESTDIR}/usr/local/lib/CMake/Kokkos/KokkosTargets.cmake")
     file(DIFFERENT EXPORT_FILE_CHANGED FILES
          "$ENV{DESTDIR}/usr/local/lib/CMake/Kokkos/KokkosTargets.cmake"
-         "/home/aaudi/work/work_numscale_kokkos/build_openmp/kokkos/CMakeFiles/Export/_usr/local/lib/CMake/Kokkos/KokkosTargets.cmake")
+         "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/kokkos/CMakeFiles/Export/_usr/local/lib/CMake/Kokkos/KokkosTargets.cmake")
     if(EXPORT_FILE_CHANGED)
       file(GLOB OLD_CONFIG_FILES "$ENV{DESTDIR}/usr/local/lib/CMake/Kokkos/KokkosTargets-*.cmake")
       if(OLD_CONFIG_FILES)
@@ -110,7 +110,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/usr/local/lib/CMake/Kokkos" TYPE FILE FILES "/home/aaudi/work/work_numscale_kokkos/build_openmp/kokkos/CMakeFiles/Export/_usr/local/lib/CMake/Kokkos/KokkosTargets.cmake")
+file(INSTALL DESTINATION "/usr/local/lib/CMake/Kokkos" TYPE FILE FILES "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/kokkos/CMakeFiles/Export/_usr/local/lib/CMake/Kokkos/KokkosTargets.cmake")
   if("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
     list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
      "/usr/local/lib/CMake/Kokkos/KokkosTargets-release.cmake")
@@ -120,15 +120,15 @@ file(INSTALL DESTINATION "/usr/local/lib/CMake/Kokkos" TYPE FILE FILES "/home/aa
     if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
         message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
     endif()
-file(INSTALL DESTINATION "/usr/local/lib/CMake/Kokkos" TYPE FILE FILES "/home/aaudi/work/work_numscale_kokkos/build_openmp/kokkos/CMakeFiles/Export/_usr/local/lib/CMake/Kokkos/KokkosTargets-release.cmake")
+file(INSTALL DESTINATION "/usr/local/lib/CMake/Kokkos" TYPE FILE FILES "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/kokkos/CMakeFiles/Export/_usr/local/lib/CMake/Kokkos/KokkosTargets-release.cmake")
   endif()
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/aaudi/work/work_numscale_kokkos/build_openmp/kokkos/core/cmake_install.cmake")
-  include("/home/aaudi/work/work_numscale_kokkos/build_openmp/kokkos/containers/cmake_install.cmake")
-  include("/home/aaudi/work/work_numscale_kokkos/build_openmp/kokkos/algorithms/cmake_install.cmake")
+  include("/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/kokkos/core/cmake_install.cmake")
+  include("/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/kokkos/containers/cmake_install.cmake")
+  include("/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/kokkos/algorithms/cmake_install.cmake")
 
 endif()
 

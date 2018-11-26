@@ -16,10 +16,10 @@ typedef DataArrayMTX::HostMirror DataArrayMTXHost;
 
 
 // Data array for sum of columns of matrix
-typedef Kokkos::View<int*, Device, Kokkos::MemoryTraits<Kokkos::Atomic>> DataArraySUMCOLS; //with atomic access
+typedef Kokkos::View<int*, Device, Kokkos::MemoryTraits<Kokkos::Atomic>> DataArraySUMCOLS_atomic; //with atomic access
 //typedef Kokkos::View<int*, Device>> DataArraySUMCOLS;
 //host mirror
-typedef DataArraySUMCOLS::HostMirror DataArraySUMCOLSHost;
+typedef DataArraySUMCOLS_atomic::HostMirror DataArraySUMCOLS_atomicHost;
 
 /************************************************/
 

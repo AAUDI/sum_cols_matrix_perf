@@ -6,5 +6,5 @@
 
 #IncludeRegexTransform: 
 
-/home/aaudi/work/work_numscale_kokkos/build_openmp/kokkos/algorithms/dummy.cpp
+/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/kokkos/algorithms/dummy.cpp
 

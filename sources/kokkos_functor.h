@@ -6,7 +6,7 @@
 
 class SumColsMatrix{
 public:
-    SumColsMatrix(DataArrayMTX mtx, DataArraySUMCOLS sum_cols_vec, int m, int n): 
+    SumColsMatrix(DataArrayMTX mtx, DataArraySUMCOLS_atomic sum_cols_vec, int m, int n): 
     mtx_(mtx), sum_cols_vec_(sum_cols_vec), m_(m), n_(n){}
 
     KOKKOS_INLINE_FUNCTION
@@ -24,7 +24,7 @@ public:
     }   
  
     DataArrayMTX mtx_; 
-    DataArraySUMCOLS sum_cols_vec_;
+    DataArraySUMCOLS_atomic sum_cols_vec_;
     int m_;
     int n_;
 };

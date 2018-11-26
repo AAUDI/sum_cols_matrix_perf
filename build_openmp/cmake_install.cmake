@@ -1,4 +1,4 @@
-# Install script for directory: /home/aaudi/work/work_numscale_kokkos
+# Install script for directory: /home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,8 +39,8 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/aaudi/work/work_numscale_kokkos/build_openmp/kokkos/cmake_install.cmake")
-  include("/home/aaudi/work/work_numscale_kokkos/build_openmp/sources/cmake_install.cmake")
+  include("/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/kokkos/cmake_install.cmake")
+  include("/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/sources/cmake_install.cmake")
 
 endif()
 
@@ -52,5 +52,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/aaudi/work/work_numscale_kokkos/build_openmp/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

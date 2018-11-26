@@ -5,7 +5,7 @@
 
 # Compute paths
 GET_FILENAME_COMPONENT(Kokkos_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
-SET(Kokkos_INCLUDE_DIRS "/home/aaudi/work/work_numscale_kokkos/kokkos;/home/aaudi/work/work_numscale_kokkos/build_openmp/kokkos")
+SET(Kokkos_INCLUDE_DIRS "/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos;/home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/kokkos")
 
 # Our library dependencies (contains definitions for IMPORTED targets)
 IF(NOT TARGET kokkos AND NOT Kokkos_BINARY_DIR)

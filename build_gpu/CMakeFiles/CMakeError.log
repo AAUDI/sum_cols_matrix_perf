@@ -1,0 +1,17 @@
+Detecting CXX [-std=c++1z] compiler features failed to compile with the following output:
+Change Dir: /home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_gpu/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9bdbd/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9bdbd.dir/build.make CMakeFiles/cmTC_9bdbd.dir/build
+make[1] : on entre dans le répertoire « /home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_gpu/CMakeFiles/CMakeTmp »
+Building CXX object CMakeFiles/cmTC_9bdbd.dir/feature_tests.cxx.o
+/home/aaudi/Bureau/fdk/fdk/kokkos/bin/nvcc_wrapper    -std=c++1z -o CMakeFiles/cmTC_9bdbd.dir/feature_tests.cxx.o -c /home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_gpu/CMakeFiles/feature_tests.cxx
+nvcc fatal   : Value 'c++1z' is not defined for option 'std'
+CMakeFiles/cmTC_9bdbd.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_9bdbd.dir/feature_tests.cxx.o' failed
+make[1]: *** [CMakeFiles/cmTC_9bdbd.dir/feature_tests.cxx.o] Error 1
+make[1] : on quitte le répertoire « /home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_gpu/CMakeFiles/CMakeTmp »
+Makefile:126: recipe for target 'cmTC_9bdbd/fast' failed
+make: *** [cmTC_9bdbd/fast] Error 2
+
+
+

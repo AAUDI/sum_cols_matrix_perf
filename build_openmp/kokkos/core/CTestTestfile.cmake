@@ -1,6 +1,6 @@
 # CMake generated Testfile for 
-# Source directory: /home/aaudi/work/work_numscale_kokkos/kokkos/core
-# Build directory: /home/aaudi/work/work_numscale_kokkos/build_openmp/kokkos/core
+# Source directory: /home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/kokkos/core
+# Build directory: /home/aaudi/Bureau/kokkos_numscale_work/sum_cols_matrix_perf/build_openmp/kokkos/core
 # 
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.
