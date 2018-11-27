@@ -5,14 +5,18 @@ void matrix::print_matrix(){
         for(int i=0; i<m; i++){
             printf("%f ", mtx[j*m + i]);
         }
-        printf("\n");
+        
     }
+    printf("\n");
 }
 
-void matrix::print_sumcols_matrix(float* sum_cols_mtx){
-    for(int i=0; i<m; i++)
-        printf("%f ", sum_cols_mtx[i]);
-    printf("\n");
+void matrix::print_sumcols_matrix(){
+    for(int i=0; i<m; i++){
+        if(i>=0 && i<10){
+            printf("%f ", sum_cols_mtx[i]);
+        }
+    }
+     printf("\n");
 }
 
 //column major access
@@ -23,16 +27,18 @@ void matrix::sum_cols_matrix_v1(){
             sum_cols_mtx[i] += mtx[j*m + i];
         }
     }
-    print_sumcols_matrix(sum_cols_mtx);
+   //print_sumcols_matrix();
 }
 
 //row major access
 void matrix::sum_cols_matrix_v2(){
 
-    for(int j=0; j<n; j++)
-        for(int i=0; i<m; i++)
+    for(int j=0; j<n; j++){
+        for(int i=0; i<m; i++){
             sum_cols_mtx[i] += mtx[j*m + i];
-    print_sumcols_matrix(sum_cols_mtx);
+        }
+    }
+    //print_sumcols_matrix();
 }
 
 //row major access
@@ -56,7 +62,7 @@ void matrix::sum_cols_matrix_openmp_v2(){
             }
         }
     }
-    print_sumcols_matrix(sum_cols_mtx);
+    //print_sumcols_matrix();
 }
 
 
@@ -129,7 +135,7 @@ void matrix::sum_cols_matrix_pthreads_v2(){
             sum_cols_mtx[k] += thr_data[j].sum_cols[k];
         }
     }
-    
+    //print_sumcols_matrix();
     for(int j=0; j<nb_threads; j++){
         free(thr_data[j].sum_cols);
     }

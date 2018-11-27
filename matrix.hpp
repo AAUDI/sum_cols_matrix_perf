@@ -31,7 +31,7 @@ class matrix
     public:
     
         matrix(int m_, int n_, int nb_threads_) : m(m_), n(n_), nb_threads(nb_threads_){
-
+            printf("GENERATING RANDOM MATRIX, PLEASE WAIT ...\n");
             if((sum_cols_mtx = (float*)malloc(m*sizeof(float))) == NULL){
 			    printf("error while allocating memory for sum_cols_mtx\n");
 			    exit(1);
@@ -50,7 +50,7 @@ class matrix
 
         
         void print_matrix();
-        void print_sumcols_matrix(float* sum_cols_mtx);
+        void print_sumcols_matrix();
         void sum_cols_matrix_v1();
         void sum_cols_matrix_v2();
         void sum_cols_matrix_openmp_v2();

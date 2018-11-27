@@ -1,10 +1,12 @@
-#############################################################################
+#############################################################################################
 # Makefile for compiling files  (.cpp .hpp) 
 # please try :
 # make TARGET_ARCH 1 (compiling for MULTICORES ARCH (OPENMP))
-# make TARGET_ARCH 2 (compiling for MULTICORES ARCH (OPENMP))
-# make standard compiling 
-#############################################################################
+# make TARGET_ARCH 2 (compiling for MULTICORES ARCH (PTHREADS))
+# make (compiling without using explicit parallelization mechanisms : only -O3 option)
+
+#PLease see the main.cpp file to change the objects declaration and their initialization.
+#############################################################################################
 
 ifeq ($(TARGET_ARCH), 1)
 CXXFLAGS += -DOPENMP
@@ -15,7 +17,7 @@ CXXFLAGS += -DPTHREADS
 LDFLAGS += -lpthread -fopenmp
 else
 ifeq ($(TARGET_ARCH), 3)
-CXXFLAGS += -DGPU
+CXXFLAGS += -DGPU 
 else
 CXXFLAGS += -DNO_OPENMP_GPU
 LDFLAGS += -fopenmp
@@ -23,8 +25,10 @@ endif
 endif
 endif
 CXX = g++-5
-CXXFLAGS += -std=c++11
+CXXFLAGS += -std=c++11 
 LDFLAGS += -lm
+
+
 OBJS = main.o matrix.o matrix_template.o OpenMPTimer.o
 
 
