@@ -9,6 +9,7 @@
 #include <iostream>
 #include <pthread.h>
 #include "pthreads_routines.hpp"
+#include "OpenMPTimer.hpp"
 
 
 using namespace std;
@@ -18,7 +19,7 @@ class matrix_template{
 
 public:
 
-    #ifdef NO_OPENMP_GPU
+    #ifdef VERSION2
     matrix_template(int m_, int n_, T min_rand, T max_rand) : m(m_), n(n_){
 
         if((op_cols_mtx = (T*)malloc(m*sizeof(T))) == NULL){
@@ -39,7 +40,7 @@ public:
     #endif
 
 
-    #if defined (OPENMP) || defined(PTHREADS)
+    #if defined (VERSION2_OPENMP) || defined(VERSION2_PTHREADS)
     matrix_template(int m_, int n_, int nb_threads_, T min_rand, T max_rand) : m(m_), n(n_), nb_threads(nb_threads_){
 
         if((op_cols_mtx = (T*)malloc(m*sizeof(T))) == NULL){
@@ -62,9 +63,12 @@ public:
 
     /* ***************************************** OPERATOR ADDITION (TEMPLATE) ****************************************** */
     void operator+(){
-        OpenMPTimer computing_time;
 
-        #ifdef NO_OPENMP_GPU
+        #if defined (VERSION2) || (VERSION2_OPENMP) || defined(VERSION2_PTHREADS)
+        OpenMPTimer computing_time;
+        #endif
+
+        #ifdef VERSION2
         computing_time.start();
         for(int j=0; j<n; j++){
             for(int i=0; i<m; i++){
@@ -72,12 +76,12 @@ public:
             }
         }
         computing_time.stop();
-        printf("NON OPTIMIZED addition computing time : %lf\n", computing_time.elapsed());
+        printf("NON OPTIMIZED (OPENMP OR PTHREADS) addition computing time : %lf\n", computing_time.elapsed());
         computing_time.reset();
         #endif
 
 
-        #ifdef PTHREADS
+        #ifdef VERSION2_PTHREADS
         computing_time.start();
         pthread_t threads[nb_threads];
         struct thread_data_t<T> thr_data[nb_threads];
@@ -120,7 +124,7 @@ public:
         #endif
 
 
-        #ifdef OPENMP
+        #ifdef VERSION2_OPENMP
         int i=0, j=0;
         computing_time.start(); 
         #pragma omp parallel num_threads(nb_threads)
@@ -143,20 +147,16 @@ public:
         printf("OPTIMIZED addition (with OPENMP) computing time : %lf\n", computing_time.elapsed());
         computing_time.reset();
         #endif
-
-        #ifdef GPU
-        for(int j=0; j<n; j++)
-            for(int i=0; i<m; i++)
-                op_cols_mtx[i] += mtx[j*m + i];
-        #endif
     }
 
     /* ****************************************** OPERATOR SUBSTRACTION (TEMPLATE) ****************************************** */
     void operator-(){
 
+        #if defined (VERSION2) || (VERSION2_OPENMP) || defined(VERSION2_PTHREADS)
         OpenMPTimer computing_time;
+        #endif
 
-        #ifdef NO_OPENMP_GPU
+        #ifdef VERSION2
         computing_time.start();
         for(int i=0; i<m; i++){
             op_cols_mtx[i] = mtx[i];
@@ -167,12 +167,12 @@ public:
             }
         }
         computing_time.stop();
-        printf("NON OPTIMIZED substraction computing time : %lf\n", computing_time.elapsed());
+        printf("NON OPTIMIZED (OPENMP OR PTHREADS) substraction computing time : %lf\n", computing_time.elapsed());
         computing_time.reset();
         #endif
 
 
-        #ifdef PTHREADS
+        #ifdef VERSION2_PTHREADS
         computing_time.start();
 
         pthread_t threads[nb_threads];
@@ -216,7 +216,7 @@ public:
         #endif
 
 
-        #ifdef OPENMP    
+        #ifdef VERSION2_OPENMP    
         computing_time.start();       
         #pragma omp parallel num_threads(nb_threads)
         {
@@ -258,24 +258,16 @@ public:
         computing_time.reset();
         #endif
 
-        #ifdef GPU
-        for(int i=0; i<m; i++){
-            op_cols_mtx[i] = mtx[i];
-        }
-        for(int j=1; j<n; j++){
-            for(int i=0; i<m; i++){
-                op_cols_mtx[i] -= mtx[j*m + i];
-            }   
-        }
-        #endif
     }
 
     /* ****************************************** OPERATOR MULTIPLICATION (TEMPLATE) ****************************************** */
     void operator*(){
 
+        #if defined (VERSION2) || defined (VERSION2_OPENMP) || defined(VERSION2_PTHREADS)
         OpenMPTimer computing_time;
+        #endif
 
-        #ifdef NO_OPENMP_GPU
+        #ifdef VERSION2
         computing_time.start(); 
         for(int i=0; i<m; i++){
             op_cols_mtx[i] = mtx[i];
@@ -286,12 +278,12 @@ public:
             }   
         }
         computing_time.stop();
-        printf("NON OPTIMIZED multiplication computing time : %lf\n", computing_time.elapsed());
+        printf("NON OPTIMIZED (OPENMP OR PTHREADS) multiplication computing time : %lf\n", computing_time.elapsed());
         computing_time.reset();
         #endif
 
 
-        #ifdef PTHREADS
+        #ifdef VERSION2_PTHREADS
         computing_time.start();
         pthread_t threads[nb_threads];
         struct thread_data_t<T> thr_data[nb_threads];
@@ -341,7 +333,7 @@ public:
         printf("\n");
         #endif
 
-        #ifdef OPENMP
+        #ifdef VERSION2_OPENMP
         computing_time.start();
         for(int k=0; k<m; k++){
             op_cols_mtx[k] = 1;
@@ -378,17 +370,6 @@ public:
         computing_time.stop();
         printf("OPTIMIZED multiplication (with OPENMP) computing time : %lf\n", computing_time.elapsed());
         computing_time.reset();
-        #endif
-
-        #ifdef GPU
-        for(int i=0; i<m; i++){
-            op_cols_mtx[i] = mtx[i];
-        }
-        for(int j=1; j<n; j++){
-            for(int i=0; i<m; i++){
-                op_cols_mtx[i] *= mtx[j*m + i];
-            }   
-        }
         #endif
     }
 
@@ -428,7 +409,7 @@ protected:
     int n, m;
     T* mtx;
     T* op_cols_mtx;
-    #if defined (OPENMP) || defined(PTHREADS)
+    #if defined (VERSION2_OPENMP) || defined(VERSION2_PTHREADS)
     int nb_threads;
     #endif
 };

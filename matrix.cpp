@@ -9,7 +9,7 @@ void matrix::print_matrix(){
     }
     printf("\n");
 }
-
+//display only the first 10 values of the result array
 void matrix::print_sumcols_matrix(){
     for(int i=0; i<m; i++){
         if(i>=0 && i<10){
@@ -19,30 +19,46 @@ void matrix::print_sumcols_matrix(){
      printf("\n");
 }
 
+#ifdef VERSION1
 //column major access
 void matrix::sum_cols_matrix_v1(){
-
+    OpenMPTimer computing_time;
+    computing_time.start();
     for(int i=0; i<m; i++){
         for(int j=0; j<n; j++){
             sum_cols_mtx[i] += mtx[j*m + i];
         }
-    }
-   //print_sumcols_matrix();
+    }  
+    computing_time.stop();
+    printf("VERSION 1 computing time : %lf\n", computing_time.elapsed());
+    computing_time.reset();
+   print_sumcols_matrix();
 }
+#endif
 
+#ifdef VERSION2
 //row major access
 void matrix::sum_cols_matrix_v2(){
-
+    OpenMPTimer computing_time;
+    computing_time.start();
     for(int j=0; j<n; j++){
         for(int i=0; i<m; i++){
             sum_cols_mtx[i] += mtx[j*m + i];
         }
     }
-    //print_sumcols_matrix();
+    computing_time.stop();
+    printf("VERSION 2 computing time : %lf\n", computing_time.elapsed());
+    computing_time.reset();
+    print_sumcols_matrix();
 }
+#endif
 
+#ifdef VERSION2_OPENMP
 //row major access
 void matrix::sum_cols_matrix_openmp_v2(){
+    
+    OpenMPTimer computing_time;
+    computing_time.start();
 
     int i=0, j=0;
  
@@ -62,13 +78,16 @@ void matrix::sum_cols_matrix_openmp_v2(){
             }
         }
     }
-    //print_sumcols_matrix();
+    computing_time.stop();
+    printf("Optimized VERSION 2 (with OPENMP) computing time : %lf\n", computing_time.elapsed());
+    computing_time.reset();
+    print_sumcols_matrix();
 }
+#endif
 
-
-
+#ifdef VERSION2_PTHREADS
 void* sum_columns(void* thread_arg) { 
-
+    
     struct thread_data *thread_d = (struct thread_data*) thread_arg;
 
     int size_work = 0, rest_work, row_start = 0, row_end = 0;
@@ -103,6 +122,9 @@ void* sum_columns(void* thread_arg) {
 
 void matrix::sum_cols_matrix_pthreads_v2(){
 
+    OpenMPTimer computing_time;
+    computing_time.start();
+
     pthread_t threads[nb_threads];
     struct thread_data thr_data[nb_threads];
     
@@ -135,13 +157,16 @@ void matrix::sum_cols_matrix_pthreads_v2(){
             sum_cols_mtx[k] += thr_data[j].sum_cols[k];
         }
     }
-    //print_sumcols_matrix();
+    print_sumcols_matrix();
     for(int j=0; j<nb_threads; j++){
         free(thr_data[j].sum_cols);
     }
+    computing_time.stop();
+    printf("Optimized VERSION 2 (with PTHREADS) computing time : %lf\n", computing_time.elapsed());
+    computing_time.reset();
    
 }
-
+#endif
 
 void matrix::memset_sum_cols_mtx(){
     memset(sum_cols_mtx, 0, sizeof(float)*m);

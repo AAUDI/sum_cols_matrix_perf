@@ -1,7 +1,7 @@
 #ifndef PTHREADS_ROUTINE
 #define PTHREADS_ROUTINE
 
-#ifdef PTHREADS
+#ifdef VERSION2_PTHREADS
 template <typename T>
 struct thread_data_t{
     int id_thread;
@@ -14,7 +14,7 @@ struct thread_data_t{
 #endif
 
 
-#ifdef PTHREADS
+#ifdef VERSION2_PTHREADS
 
 template <typename T>
 void* op_columns(void* thread_arg);
@@ -137,9 +137,5 @@ void* op_mul_columns(void* thread_arg) {
     }
 } 
 
-
 #endif
-
-
-
 #endif
